@@ -5,28 +5,13 @@ var db = new neo4j.GraphDatabase("http://codemap:kOITyJ5vrvCQDF9N8ybB@codemap.sb
 //var db = new neo4j.GraphDatabase('http://localhost:7474');
 
 
-
-/*
-var node = db.createNode({hello: 'world'});     // instantaneous, but...
-
-node.save(function (err, node) {    // ...this is what actually persists.
-     if (err) {
-         console.error('Error saving new node to database:', err);
-     } else {
-         console.log('Node saved to database with id:', node.id);
-     }
-});
-*/
 var INDEX_NAME = 'nodes';
 var INDEX_KEY = 'type'; 
-//var INDEX_VAL = 'person';
 var INDEX_VAL = 'skill';
 var relationType = 'none';
 
 var Skill = module.exports = function Skill(_node) {
     this._node = _node;
-    //Where should this logic live?
-    this._node.skillType = 'thing';  //Person, Skill, Idea, Project
 }
 
 
@@ -43,7 +28,6 @@ Object.defineProperty(Skill.prototype, 'title', {
     set: function(title) { this._node.data['title'] = title; }
 });
 
-//Project/Owner/Person, etc. Not something that should live elsewhere?
 Object.defineProperty(Skill.prototype, 'url', {
     get: function() { return this._node.data['url']; },
     set: function(url) { this._node.data['url'] = url; }
