@@ -1,0 +1,22 @@
+
+extends layout
+
+block content
+
+    if persons.length
+        p Here are the current entries:
+        ul.persons
+            for person in persons
+                li.person
+                    a(href='/people/#{person.id}') #{person.title}
+                    ul.relations
+                        li.relation
+                            a(href='#{person.url}') #{person.url}
+    else
+        p There are no entries.
+
+    form(action'/people', method='POST')
+        p Create a new person:
+        input(type='text', name='title', placeholder="Who?", required)
+        input(type='text', name='url', placeholder="url", required)
+        input(type='submit', value='Create')

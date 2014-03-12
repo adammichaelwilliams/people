@@ -1,0 +1,18 @@
+extends layout
+
+block content
+    h1 #{skill.title}
+
+    p
+        a(href='/skills') All skills (doesn't quite work)
+    if relations.length
+        p #{skill.title} has #{relations.length} other relations:
+        ul.skills
+            for other in relations
+                li.skill
+                    a(href='/skills/#{other.id}') #{other.title}
+    else
+        p #{skill.title} has no relations.
+
+
+
