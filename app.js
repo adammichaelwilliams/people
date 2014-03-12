@@ -19,7 +19,8 @@ node.save(function (err, node) {    // ...this is what actually persists.
 });
 */
 
-app.set('port', 3000);
+app.set('port', 80);
+//app.set('port', 3000);
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
