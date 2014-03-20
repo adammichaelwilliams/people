@@ -6,17 +6,24 @@ var path = require('path');
 
 var app = express();
 
-app.set('port', 80);
-//app.set('port', 3000);
+//app.set('port', 80);
+app.set('port', 3000);
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 
+app.use(function(req, res, next) {
+    app.locals.pretty = true;
+    next();
+});
+
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(app.router);
+app.use(express.static(__dirname + '/static'));
 
 app.get('/', routes.index);
+app.get('/table', routes.table.list);
 
 app.get('/people', routes.persons.list);
 app.post('/people', routes.persons.create);

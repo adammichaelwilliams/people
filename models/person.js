@@ -1,8 +1,7 @@
 
 var neo4j = require("neo4j");
-var db = new neo4j.GraphDatabase("http://codemap:kOITyJ5vrvCQDF9N8ybB@codemap.sb01.stations.graphenedb.com:24789");
-//var neo4j = require('neo4j');
-//var db = new neo4j.GraphDatabase('http://localhost:7474');
+//var db = new neo4j.GraphDatabase("http://codemap:kOITyJ5vrvCQDF9N8ybB@codemap.sb01.stations.graphenedb.com:24789");
+var db = new neo4j.GraphDatabase('http://localhost:7474');
 
 var Skill = require('./skill');
 
@@ -128,11 +127,55 @@ Person.getAll = function(callback) {
             }
         }
         var persons = nodes.map(function(node) {
+//            console.log(node);
             return new Person(node);
         });
         callback(null, persons);
     });
 }
+
+Person.getPeopleWithSkills = function(callback) {
+    var query = [
+        'MATCH (person)-[:knows]->(skill)',
+        'RETURN person AS Person, collect(skill) AS SkillList;'
+      ].join('\n')
+       .replace('GENERIC_REL', skillRelation);
+
+    var params = {};
+
+    db.query(query, params, function(err, res) {
+        if(err) {
+                if(err.message.match(/Neo4j NotFoundException/i)) {
+                    return callback(null, []);
+                } else {
+                    return callback(err);
+                }
+        }
+//        console.log(res);
+        var results = res[0];
+//        var people = [];
+
+        var people = res.map(function(result) {
+            console.log(result);
+//            console.log("result: %s", result);
+            var person = new Person(result['Person']);
+
+            var skillNodes = result['SkillList'];
+            var skills = skillNodes.map(function(node) {
+//                console.log(node);
+                return new Skill(node);
+            });
+//            console.log(person.title);
+            person.skills = skills;
+
+            return person;
+        });
+        //var persons = res[0] && res[0]['rel'];
+        callback(null, people);
+    });
+};
+
+
 
 Person.create = function(data, arg, callback) {
     console.log("Person creation data:");

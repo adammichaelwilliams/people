@@ -6,7 +6,6 @@
 var Person = require('../models/person');
 
 
-// Person.getAll not implemented yet
 exports.list = function(req, res, next) {
     Person.getAll(function(err, persons) {
         if(err) return next(err);

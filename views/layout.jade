@@ -2,9 +2,18 @@
 doctype html
 html
     head
-        body
-            p 
-                a(href="/people") People
-            p 
-                a(href="/skills") Skills
-        block content
+        title People and Skills
+        script(src='/js/jquery.js')
+        script(src='/js/jquery.dataTables.min.js')
+        link(rel='stylesheet', href='/css/jquery.dataTables.css')
+        script.
+            $(document).ready(function() {
+                $('#skillTable').dataTable({
+                });
+            });
+    body
+        p 
+            a(href="/people") People
+        p 
+            a(href="/skills") Skills
+    block content
