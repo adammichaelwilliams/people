@@ -5,11 +5,11 @@ html
         title People and Skills
         script(src='/js/jquery.js')
         script(src='/js/jquery.dataTables.min.js')
+        script(src='/js/mindmup-editabletable.js')
         link(rel='stylesheet', href='/css/jquery.dataTables.css')
         script.
             $(document).ready(function() {
-                $('#skillTable').dataTable({
-                });
+                $('#skillTable').dataTable().editableTableWidget();
             });
     body
         p 
