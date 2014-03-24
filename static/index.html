@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Who does what?</title>
+        <link href="css/app.css" rel="stylesheet">
+        <link href="css/backgrid.min.css" rel="stylesheet">
+        <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+<!--        <script type="text/javascript"
+    src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
+-->
+        <script>
+            var socket = io.connect();
+            socket.on('connect', function () {
+                socket.send(window.location.href);
+            });
+            window.onhashchange = function () {
+                socket.send(window.location.href);
+            }
+        </script>
+    </head>
+    <body>
+
+        <div>
+            <p><a href="/">Home</a>
+            <p><a href="/#people">People</a>
+            <p><a href="/#skills">Skills</a>
+            <p><a href="/#table">Table</a>
+        </div>
+
+
+        <div id="content">
+        </div>
+
+        <script type="text/template" id="person-view-template">
+            <p><%= person.attributes.title %>
+        </script>
+        <script type="text/template" id="table-view-template">
+            <% _.each(people, function(person){ %>
+                <p>Person:
+                <p><%= person.attributes.title %>
+            <% }); %>
+        </script>
+
+
+        <script src="lib/jquery.js"></script>
+        <script src="lib/underscore.js"></script>
+        <script src="lib/backbone.js"></script>
+        <script src="lib/backgrid.min.js"></script>
+        
+        <script src="js/models.js"></script>
+        <script src="js/views.js"></script>
+        <script src="js/main.js"></script>
+
+    </body>
+</html>

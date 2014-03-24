@@ -3,14 +3,15 @@ var express = require('express');
 var routes = require('./routes');
 var http = require('http');
 var path = require('path');
+var io = require('socket.io');
 
 var app = express();
 
 //app.set('port', 80);
 app.set('port', 3000);
 
-app.set('views', __dirname + '/views');
-app.set('view engine', 'jade');
+//app.set('views', __dirname + '/views');
+//app.set('view engine', 'jade');
 
 app.use(function(req, res, next) {
     app.locals.pretty = true;
@@ -22,7 +23,8 @@ app.use(express.methodOverride());
 app.use(app.router);
 app.use(express.static(__dirname + '/static'));
 
-app.get('/', routes.index);
+
+/*
 app.get('/table', routes.table.list);
 
 app.get('/people', routes.persons.list);
@@ -36,10 +38,47 @@ app.post('/skills', routes.skills.create);
 app.get('/skills/:id', routes.skills.show);
 
 app.post('/skills/:id/relate', routes.skills.relate);
-
-
+*/
+/*
 http.createServer(app).listen(app.get('port'), function(){
+});
+*/
+
+var server = http.createServer(app);
+io = io.listen(server);
+
+io.configure(function() {
+    io.set('authorization', function(handshakeData, callback) {
+        if(handshakeData.xdomain) {
+            callback('Cross-domain connections are not allowed');
+        } else {
+            callback(null, true);
+        }
+    });
+});
+
+
+server.listen(app.get('port'), function() {
     console.log('Server running on http://localhost:%d/', app.get('port'));
+});
+
+
+app.get('/people', routes.persons.list);
+
+
+io.sockets.on('connection', function (socket) {
+
+    socket.on('message', function (message) {
+        console.log("Got message: " + message);
+        ip = socket.handshake.address.address;
+        url = message;
+        io.sockets.emit('pageview', { 'connections': Object.keys(io.connected).length, 'ip': '***.***.***.' + ip.substring(ip.lastIndexOf('.') + 1), 'url': url, 'xdomain': socket.handshake.xdomain, 'timestamp': new Date()});
+    });
+
+    socket.on('disconnect', function () {
+        console.log("Socket disconnected");
+        io.sockets.emit('pageview', { 'connections': Object.keys(io.connected).length});
+    });
 });
 
 

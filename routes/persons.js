@@ -9,9 +9,17 @@ var Person = require('../models/person');
 exports.list = function(req, res, next) {
     Person.getAll(function(err, persons) {
         if(err) return next(err);
-        res.render('persons', {
-            persons: persons
+        //res.render('persons', {
+        var personList = persons.map(function(node) {
+            console.log(node);
+            var person = node._node._data.data;
+            return person;
+//            return node;
         });
+        res.send(personList);
+//        res.send({
+//            persons: persons
+//        });
     });
 };
 
