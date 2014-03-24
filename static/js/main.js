@@ -1,6 +1,5 @@
 
 
-
 var AppRouter = Backbone.Router.extend({
 
 
@@ -31,7 +30,6 @@ var AppRouter = Backbone.Router.extend({
         var peopleList = new PeopleCollection();
         peopleList.fetch({success: function() {
             $("#content").html(new PeopleListView({model: peopleList}).el);
-
         }});
     },
 
