@@ -31,6 +31,7 @@ var AppRouter = Backbone.Router.extend({
         var peopleList = new PeopleCollection();
         peopleList.fetch({success: function() {
             $("#content").html(new PeopleListView({model: peopleList}).el);
+
         }});
     },
 
@@ -85,6 +86,15 @@ var AppRouter = Backbone.Router.extend({
             })
             $('#content').html(grid.render().el);
             peopleList.fetch({reset: true}); 
+            $('#content').prepend('Add Yourself!<form action="/#people" method="post"><input id="add-person-email" name="email" type="email" placeholder="Email"/><input type="submit" id="add-person"/></form>');
+            
+            // Hack for vertical headers
+            var counter = 1000; // Max 1000 cols
+            $.each($('th'),function(index,col){
+                $(col).html('<div>'+$(col).html()+"</div>");
+                // this line fixes not working sortBy columns due to overlapping divs
+                $(col).css('z-index',counter--); 
+            });
         });
     }
 });
