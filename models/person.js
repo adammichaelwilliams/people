@@ -1,7 +1,6 @@
-
 var neo4j = require("neo4j");
-var db = new neo4j.GraphDatabase("http://codemap:kOITyJ5vrvCQDF9N8ybB@codemap.sb01.stations.graphenedb.com:24789");
-//var db = new neo4j.GraphDatabase('http://localhost:7474');
+//var db = new neo4j.GraphDatabase("http://codemap:kOITyJ5vrvCQDF9N8ybB@codemap.sb01.stations.graphenedb.com:24789");
+var db = new neo4j.GraphDatabase('http://localhost:7474');
 
 var Skill = require('./skill');
 
