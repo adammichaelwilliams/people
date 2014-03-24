@@ -10,9 +10,12 @@ var Skill = require('../models/skill');
 exports.list = function(req, res, next) {
     Skill.getAll(function(err, skills) {
         if(err) return next(err);
-        res.render('skills', {
-            skills: skills
+        var skillList = skills.map(function(node) {
+            var skill = node._node._data.data;
+            skill.id = node.id;
+            return skill;
         });
+        res.send(skillList);
     });
 };
 
@@ -41,6 +44,20 @@ exports.show = function(req, res, next) {
         });
     });
 };
+
+
+exports.edit = function(req, res, next) {
+    Skill.get(req.params.id, function(err, skill) {
+        if(err) return next(rer);
+        skill.title = req.body['title'];
+        skill.url = req.body['url'];
+        skill.save(function (err) {
+            if (err) return next(err);
+//            res.redirect('/skills/' + skill.id);
+        });
+    });
+};
+
 
 exports.relate = function(req, res, next) {
     Skill.get(req.params.id, function(err, skill) {

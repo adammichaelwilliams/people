@@ -11,7 +11,6 @@ var INDEX_VAL = 'person';
 var SKILL_INDEX_VAL = 'skill';
 var relationType = 'none';
 var skillRelation = 'knows';
-var interestRelation = 'has interest in'; //Future
 
 var Person = module.exports = function Person(_node) {
     this._node = _node;
@@ -72,6 +71,12 @@ Person.prototype.relate = function(other, callback) {
     });
 };
 
+Person.prototype.save = function (callback) {
+    this._node.save(function (err) {
+        callback(err);
+    });
+};
+
 Person.prototype.getSkills = function(callback) {
     var query = [
         'START person=node({personId}), other=node:INDEX_NAME(INDEX_KEY="INDEX_VAL")',
@@ -127,7 +132,6 @@ Person.getAll = function(callback) {
             }
         }
         var persons = nodes.map(function(node) {
-//            console.log(node);
             return new Person(node);
         });
         callback(null, persons);
@@ -151,21 +155,15 @@ Person.getPeopleWithSkills = function(callback) {
                     return callback(err);
                 }
         }
-//        console.log(res);
         var results = res[0];
-//        var people = [];
 
         var people = res.map(function(result) {
-            console.log(result);
-//            console.log("result: %s", result);
             var person = new Person(result['Person']);
 
             var skillNodes = result['SkillList'];
             var skills = skillNodes.map(function(node) {
-//                console.log(node);
                 return new Skill(node);
             });
-//            console.log(person.title);
             person.skills = skills;
 
             return person;

@@ -15,7 +15,7 @@ var AppRouter = Backbone.Router.extend({
 
     main: function() {
         if(!this.mainView) {
-            this.mainView = new mainView();
+            this.mainView = new MainView();
         }
         var peopleList = new PeopleCollection();
 //        peopleList.fetch({success: function() {
@@ -26,39 +26,66 @@ var AppRouter = Backbone.Router.extend({
 
     list: function() {
         if(!this.mainView) {
-            this.mainView = new mainView();
+            this.mainView = new MainView();
         }
         var peopleList = new PeopleCollection();
         peopleList.fetch({success: function() {
             $("#content").html(new PeopleListView({model: peopleList}).el);
         }});
     },
+
     table: function() {
-        var peopleList = new PeopleCollection();
 
-        var columns = [{
-                name: "title",
-                label: "Title",
-                cell: "string"
+    //TODO all of this logic should go into view/elsewhere
+    // the column/skill model/collection is bullshit and should
+    // be handled in a much different fashion
+    // Here we've got a jerry-rigged column list based off a 
+    // largely unused Backgrid.Columns collection
+    // Ideally the columns would represent the total list of skills
+    // at any given time, added and remove dynamically.
+    // This essentially does that, but not quite as well as we'd like
+    // for instance the saving of a changed skill isn't built in yet
+        var static_columns = [{
+                name: 'id',
+                label: 'ID',
+                cell: Backgrid.IntegerCell.extend({
+                    orderSeparator: ''
+                })
             }, {
-                name: "url",
-                label: "URL",
-                cell: "string"
+                name: 'title',
+                label: 'Title',
+                cell: 'string'
+            }, {
+                name: 'url',
+                label: 'URL',
+                cell: 'string'
             }];
-        var grid = new Backgrid.Grid({
-            columns: columns,
-            collection: peopleList
+
+        var peopleList = new PeopleCollection();
+        var skillList = new SkillCollection();
+
+        var skillColumns = Backgrid.Columns.extend({
+            url: "/skills"
         });
-
-        $('#content').html(grid.render().el);
-
-        peopleList.fetch({reset: true}); 
-
-/*                
-        peopleList.fetch({success: function() {
-            $("#content").html(new tableView({model: peopleList}).el);
-        }});
-*/
+        var skills = new skillColumns();
+        skills.fetch().done(function() {
+            var columns = skills.models.map(function(model) {
+                console.log(model.get('title'));
+                var col = {
+                    name: model.id,
+                    label: model.get('title'),
+                    cell: 'string'
+                }
+                return col;
+            });
+            var cols = static_columns.concat(columns);
+            var grid = new Backgrid.Grid({
+                columns: cols,
+                collection: peopleList
+            })
+            $('#content').html(grid.render().el);
+            peopleList.fetch({reset: true}); 
+        });
     }
 });
 

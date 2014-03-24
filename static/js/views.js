@@ -1,6 +1,6 @@
 
 
-window.mainView = Backbone.View.extend({
+window.MainView = Backbone.View.extend({
 
     initialize: function() {
         this.render();
@@ -14,11 +14,14 @@ window.mainView = Backbone.View.extend({
 
 });
 
-window.tableView = Backbone.View.extend({
+//This is where the logic currently in the main.js script 
+//  for the table should actually reside
+//  TODO
+/*
+window.TableView = Backbone.View.extend({
 
     initialize: function() {
 
-/*
         var columns = [{
                 name: "title",
                 label: "Title",
@@ -37,7 +40,6 @@ window.tableView = Backbone.View.extend({
         });
 
         $('#content'.append(grid.render().el);
-*/
         this.render();
     },
 
@@ -50,6 +52,8 @@ window.tableView = Backbone.View.extend({
     }
 
 });
+
+*/
 
 
 window.PeopleListView = Backbone.View.extend({
@@ -77,7 +81,7 @@ window.PeopleListView = Backbone.View.extend({
 window.PersonView = Backbone.View.extend({
     
     initialize: function() {
-//        this.render();
+        this.render();
     },
 
     render: function() {
@@ -85,6 +89,7 @@ window.PersonView = Backbone.View.extend({
         //var personData = this.model.attributes._node._data.data;
         var personData = this.model;
         console.log(personData);
+        console.log(personData.toJSON());
 
         var template = _.template($('#person-view-template').html(), {person : personData}); 
 
