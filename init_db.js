@@ -1,5 +1,6 @@
 var Person = require('./models/person');
 var Skill = require('./models/skill');
+
 var buildDBSkill = function(jsonObj) {
     for(var entry in jsonObj) {
         entryData = jsonObj[entry];
@@ -93,8 +94,8 @@ fs.readFile(file, 'utf8', function (err, data) {
     }
     data = JSON.parse(data);
 //  console.dir(data);
+    buildDBSkill(data); //Run once!
     buildDB(data);
-//    buildDBSkill(data); //Run once!
 });
 
 
