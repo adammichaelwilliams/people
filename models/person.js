@@ -70,6 +70,18 @@ Person.prototype.relate = function(other, callback) {
     });
 };
 
+Person.prototype.relateWithData = function(other, data, callback) {
+    //Where should this logic live?
+    //Relationship hash => this type + that type -> rel_type
+    //if node.type && other.type == "person"  => friends
+    //if node.type && other.type => friends
+    var data_obj = { data: data };
+    this._node.createRelationshipTo(other._node, skillRelation, data_obj, function(err, rel) {
+        callback(err);
+    });
+};
+
+
 Person.prototype.save = function (callback) {
     this._node.save(function (err) {
         callback(err);
@@ -139,12 +151,13 @@ Person.getAll = function(callback) {
 
 Person.getPeopleWithSkills = function(callback) {
     var query = [
-        'MATCH (person)-[:knows]->(skill)',
-        'RETURN person AS Person, collect(skill) AS SkillList;'
+        'MATCH (person)-[rel:knows]->(skill)',
+        'RETURN person AS Person, collect(rel) AS Rels, collect(skill) AS Skills;'
       ].join('\n')
        .replace('GENERIC_REL', skillRelation);
 
     var params = {};
+
 
     db.query(query, params, function(err, res) {
         if(err) {
@@ -158,13 +171,32 @@ Person.getPeopleWithSkills = function(callback) {
 
         var people = res.map(function(result) {
             var person = new Person(result['Person']);
+            var rels = result['Rels'];
 
-            var skillNodes = result['SkillList'];
+            for(var i in rels) {
+                var rel_id = "skillz-" + rels[i]._end.id;
+                var rel_data = rels[i]._data.data;
+                if(!rel_data.data) rel_data.data = "X";
+                person._node._data.data[rel_id] = rel_data.data;
+            }
+
+            var skillNodes = result['Skills'];
             var skills = skillNodes.map(function(node) {
                 return new Skill(node);
             });
             person.skills = skills;
+            //console.log(person._node._data.data);            
 
+            /*
+            person._node.outgoing(skillRelation, function(err, rels) {
+//                console.log(rels);
+//                console.log(rels[0]._end.id);
+                console.log(rels[0]._data.data);
+                var rel_id = "skillz-" + rels[0]._end.id;
+                person[rel_id] = rels[0]._data.data;
+            });
+            console.log(relations);
+            */
             return person;
         });
         //var persons = res[0] && res[0]['rel'];

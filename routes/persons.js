@@ -1,6 +1,7 @@
 
 
 var Person = require('../models/person');
+var Skill = require('../models/skill');
 
 
 // Route for sending all people with ids;
@@ -75,6 +76,33 @@ exports.show = function(req, res, next) {
 };
 */
 
+getRelationshipAndId = function(key) {
+
+    var rel_id_split_seq = "-";
+
+    var split_loc = key.indexOf(rel_id_split_seq);
+    if(split_loc == -1) return null;
+
+    if(split_loc != key.lastIndexOf(rel_id_split_seq)) return null;
+
+    var id_begin = split_loc + rel_id_split_seq.length;
+
+    var skill_id = key.substr(id_begin, key.length);
+
+    var skill = key.substr(0, split_loc);
+    
+    return { name: skill, 
+             id: skill_id
+            };
+/*
+
+    if(partial != "skill" || key == "skills") return;
+
+    var skill_id = key.substr(5, key.length);
+    console.log("skill id: %s", skill_id);
+*/
+}
+
 // Update person, currently a put request
 //  with title and url being updated based
 //  on parameters; uses id to specify node
@@ -85,8 +113,38 @@ exports.edit = function(req, res, next) {
 
         //Is there a case where the request wouldn't have all of the
         // nodes data? I think yes
-        if(req.body['title']) person.title = req.body['title'];
-        if(req.body['url']) person.url = req.body['url'];
+        person.title = (req.body['title'] ? req.body['title'] : "");
+        person.url = (req.body['url'] ? req.body['url'] : "");
+
+        var skills = []
+
+        var data = {};
+
+        for(var key in req.body) {
+
+            var skillObj = getRelationshipAndId(key);
+
+            if(skillObj == null) continue
+            
+            var skill_id = skillObj.id;
+            //Relationship data
+            data[skill_id] = req.body[key];
+
+            skills.push(skill_id);
+        }
+
+        skills.forEach( function(id) {
+
+            Skill.get(id, function(err, skill) {
+                person.relateWithData(skill, data[id], function(err) {
+                    if(err) {
+                        console.log("couldn't create relation between %s and %s", person.title, skill.title);
+                    } else {
+                        console.log("Rel created between %s and %s", skill.title, person.title);
+                    }
+                });
+            });
+        });
 
         person.save(function (err) {
             if (err) return next(err);

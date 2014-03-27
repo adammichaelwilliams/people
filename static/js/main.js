@@ -71,7 +71,7 @@ var AppRouter = Backbone.Router.extend({
             var columns = skills.models.map(function(model) {
                 console.log(model.get('title'));
                 var col = {
-                    name: model.id,
+                    name: 'skillz-'+model.id,
                     label: model.get('title'),
                     cell: 'string'
                 }
