@@ -183,7 +183,7 @@ Person.create = function(data, arg, callback) {
         if(err) return callback(err);
         node.index(INDEX_NAME, INDEX_KEY, INDEX_VAL, function(err) {
             if(err) return callback(err);
-            callback(null, person, arg);
+//            callback(null, person, arg);
         });
     });
 };

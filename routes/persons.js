@@ -37,16 +37,19 @@ exports.list = function(req, res, next) {
 //  however Backbone is handling that now.
 exports.create = function(req, res, next) {
 
+    var url = (req.body['url'] ? req.body['url'] : "");
+
     Person.create({
 
         title: req.body['title'],
-        url: req.body['url']
+        url: url
 
     }, function(err, person) {
         if(err) return next(err);
 // Backbone handles frontend routing now
 //  could send response data?
 //        res.redirect('/people/' + person.id);
+//        res.redirect('/#table');
     });
 };
 

@@ -42,9 +42,9 @@ server.listen(app.get('port'), function() {
 app.get('/table', routes.table.list);
 app.get('/people', routes.persons.list);
 app.put('/people/:id', routes.persons.edit);
+app.post('/people', routes.persons.create);
 
 //Implemented but not up to date with Backbone/Socket.io changes
-//app.post('/people', routes.persons.create);
 //app.get('/people/:id', routes.persons.show);
 
 app.get('/skills', routes.skills.list);

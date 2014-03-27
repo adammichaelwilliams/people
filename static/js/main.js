@@ -84,7 +84,7 @@ var AppRouter = Backbone.Router.extend({
             })
             $('#content').html(grid.render().el);
             peopleList.fetch({reset: true}); 
-            $('#content').prepend('Add Yourself!<form action="/#people" method="post"><input id="add-person-email" name="email" type="email" placeholder="Email"/><input type="submit" id="add-person"/></form>');
+            $('#content').prepend('Add Yourself!<form action="/people" method="post"><input id="add-person-email" name="title" type="email" placeholder="Email"/><input type="submit" id="add-person"/></form>');
             
             // Hack for vertical headers
             var counter = 1000; // Max 1000 cols
