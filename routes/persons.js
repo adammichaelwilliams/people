@@ -45,12 +45,22 @@ exports.create = function(req, res, next) {
         title: req.body['title'],
         url: url
 
-    }, function(err, person) {
+    }, {}, function(err, person) {
         if(err) return next(err);
+
+        //HACK TODO TODO
+        Skill.get(2, function(err, skill) {
+            person.relate(skill, function(err) {
+                if(err) {
+                    console.log("couldn't create relation between %s and %s", person.title, skill.title);
+                } 
+                res.redirect('/#table');
+            });
+        });
+
 // Backbone handles frontend routing now
 //  could send response data?
 //        res.redirect('/people/' + person.id);
-//        res.redirect('/#table');
     });
 };
 
@@ -139,8 +149,6 @@ exports.edit = function(req, res, next) {
                 person.relateWithData(skill, data[id], function(err) {
                     if(err) {
                         console.log("couldn't create relation between %s and %s", person.title, skill.title);
-                    } else {
-                        console.log("Rel created between %s and %s", skill.title, person.title);
                     }
                 });
             });

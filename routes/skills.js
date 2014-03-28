@@ -20,8 +20,6 @@ exports.list = function(req, res, next) {
 };
 
 exports.create = function(req, res, next) {
-    console.log("create req: %s \n res: %s \n", req, res);
-    console.log(req.body);
     Skill.create({
         title: req.body['title'],
         url: req.body['url']

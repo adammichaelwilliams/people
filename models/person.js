@@ -207,15 +207,13 @@ Person.getPeopleWithSkills = function(callback) {
 
 
 Person.create = function(data, arg, callback) {
-    console.log("Person creation data:");
-    console.log(data);
     var node = db.createNode(data);
     var person = new Person(node);
     node.save(function(err) {
         if(err) return callback(err);
         node.index(INDEX_NAME, INDEX_KEY, INDEX_VAL, function(err) {
             if(err) return callback(err);
-//            callback(null, person, arg);
+            callback(null, person, arg);
         });
     });
 };

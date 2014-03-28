@@ -47,9 +47,13 @@ var AppRouter = Backbone.Router.extend({
         var static_columns = [{
                 name: 'id',
                 label: 'ID',
+                sortable: true,
+                renderable: false,
+                direction: 'descending',
                 cell: Backgrid.IntegerCell.extend({
                     orderSeparator: ''
-                })
+                }),
+                headerCell: Backgrid.HeaderCell
             }, {
                 name: 'title',
                 label: 'Title',
@@ -69,7 +73,6 @@ var AppRouter = Backbone.Router.extend({
         var skills = new skillColumns();
         skills.fetch().done(function() {
             var columns = skills.models.map(function(model) {
-                console.log(model.get('title'));
                 var col = {
                     name: 'skillz-'+model.id,
                     label: model.get('title'),
@@ -78,12 +81,16 @@ var AppRouter = Backbone.Router.extend({
                 return col;
             });
             var cols = static_columns.concat(columns);
-            var grid = new Backgrid.Grid({
+            window.grid = new Backgrid.Grid({
                 columns: cols,
                 collection: peopleList
             })
-            $('#content').html(grid.render().el);
-            peopleList.fetch({reset: true}); 
+            $('#content').html(window.grid.render().el);
+            peopleList.comparator = function(model) {
+                return -model.get('id')
+            }
+            peopleList.fetch({reset: true});
+
             $('#content').prepend('Add Yourself!<form action="/people" method="post"><input id="add-person-email" name="title" type="email" placeholder="Email"/><input type="submit" id="add-person"/></form>');
             
             // Hack for vertical headers
