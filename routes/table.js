@@ -35,7 +35,7 @@ exports.list = function(req, res, next) {
             person.skills = skills.map(function(other) {
 
                 var skill = other._node._data.data;
-                skill.id = 'skillz-'+other.id;
+                skill.id = 'skill-'+other.id;
                 return skill;
             });
 

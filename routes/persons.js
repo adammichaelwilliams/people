@@ -38,7 +38,12 @@ exports.list = function(req, res, next) {
 //  however Backbone is handling that now.
 exports.create = function(req, res, next) {
 
+    var title = (req.body['title'] ? req.body['title'] : "");
     var url = (req.body['url'] ? req.body['url'] : "");
+
+    if(title == "") {
+        res.send("Couldn't create person");
+    }
 
     Person.create({
 
@@ -54,7 +59,7 @@ exports.create = function(req, res, next) {
                 if(err) {
                     console.log("couldn't create relation between %s and %s", person.title, skill.title);
                 } 
-                res.redirect('/#table');
+                res.send(person);
             });
         });
 

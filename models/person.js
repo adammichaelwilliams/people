@@ -174,7 +174,7 @@ Person.getPeopleWithSkills = function(callback) {
             var rels = result['Rels'];
 
             for(var i in rels) {
-                var rel_id = "skillz-" + rels[i]._end.id;
+                var rel_id = "skill-" + rels[i]._end.id;
                 var rel_data = rels[i]._data.data;
                 if(!rel_data.data) rel_data.data = "X";
                 person._node._data.data[rel_id] = rel_data.data;

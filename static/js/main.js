@@ -4,7 +4,7 @@ var AppRouter = Backbone.Router.extend({
 
 
     routes: {
-        ""        : "main",
+        "home"        : "main",
         "people"  : "list",
         "table"   : "table"
     },
@@ -44,63 +44,46 @@ var AppRouter = Backbone.Router.extend({
     // at any given time, added and remove dynamically.
     // This essentially does that, but not quite as well as we'd like
     // for instance the saving of a changed skill isn't built in yet
-        var static_columns = [{
-                name: 'id',
-                label: 'ID',
-                sortable: true,
-                renderable: false,
-                direction: 'descending',
-                cell: Backgrid.IntegerCell.extend({
-                    orderSeparator: ''
-                }),
-                headerCell: Backgrid.HeaderCell
-            }, {
-                name: 'title',
-                label: 'Title',
-                cell: 'string'
-            }, {
-                name: 'url',
-                label: 'URL',
-                cell: 'string'
-            }];
+        //Create TableView if doesn't exist
+        if(!this.tableView) {
 
-        var peopleList = new PeopleCollection();
-        var skillList = new SkillCollection();
-
-        var skillColumns = Backgrid.Columns.extend({
-            url: "/skills"
-        });
-        var skills = new skillColumns();
-        skills.fetch().done(function() {
-            var columns = skills.models.map(function(model) {
-                var col = {
-                    name: 'skillz-'+model.id,
-                    label: model.get('title'),
-                    cell: 'string'
-                }
-                return col;
+            this.peopleList = new PeopleCollection();
+            skillColumns = Backgrid.Columns.extend({
+                url: "/skills"
             });
-            var cols = static_columns.concat(columns);
-            window.grid = new Backgrid.Grid({
-                columns: cols,
-                collection: peopleList
-            })
-            $('#content').html(window.grid.render().el);
-            peopleList.comparator = function(model) {
-                return -model.get('id')
+            var skills = new skillColumns();
+            skills.comparator = function(model) {
+                return model.get('id')
             }
-            peopleList.fetch({reset: true});
+            var scope = this;
+            skills.fetch({ success: function() {
 
-            $('#content').prepend('Add Yourself!<form action="/people" method="post"><input id="add-person-email" name="title" type="email" placeholder="Email"/><input type="submit" id="add-person"/></form>');
-            
-            // Hack for vertical headers
-            var counter = 1000; // Max 1000 cols
-            $.each($('th'),function(index,col){
-                $(col).html('<div>'+$(col).html()+"</div>");
-                // this line fixes not working sortBy columns due to overlapping divs
-                $(col).css('z-index',counter--); 
-            });
-        });
+                scope.peopleList.comparator = function(model) {
+                    return -model.get('id')
+                }
+                scope.peopleList.fetch({reset: true}).done(function() {
+
+                    
+                    scope.tableView = new TableView({model: { peopleList: scope.peopleList, skills: skills}} );
+                    $("#content").html(scope.tableView.el);
+                    // Hack for vertical headers
+                    var counter = 1000; // Max 1000 cols
+                    $.each($('th'),function(index,col){
+                        $(col).html('<div>'+$(col).html()+"</div>");
+                        // this line fixes not working sortBy columns due to overlapping divs
+                        $(col).css('z-index',counter--); 
+                    });
+                });
+            }});
+        } else {
+            console.log("alreadyrendered");
+            //Render Tableview
+            $("#content").html(this.tableView.el);
+            //Update people collection
+            this.peopleList.fetch();
+        }
+
+    
     }
 });
 

@@ -11,6 +11,14 @@ body {
 }
 */
 
+/* Hack to position table in relation to add person form
+ * TODO REMOVE THIS and style it properly
+ */
+.backgrid {
+    position: absolute;
+    margin-top: -100px;
+    z-index: -1;
+}
 
 .backgrid td{
   width: 30px;
