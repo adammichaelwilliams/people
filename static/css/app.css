@@ -11,12 +11,21 @@ body {
 }
 */
 
+#add-person-form {
+
+    max-width: 250px;
+    z-index: 1000;
+    display: block;
+    position: absolute;
+
+}
+
 /* Hack to position table in relation to add person form
  * TODO REMOVE THIS and style it properly
  */
 .backgrid {
     position: absolute;
-    margin-top: -100px;
+    margin-top: -77px;
     z-index: -1;
 }
 
