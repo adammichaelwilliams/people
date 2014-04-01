@@ -12,9 +12,8 @@ body {
 
 .skill-instruction {
 
-    margin-left: 226px;
-    width: 250px;
     font-style: italic;
+    margin-top: 58px;
 }
 
 .backgrid th {
@@ -37,7 +36,6 @@ body {
 #add-person-box {
     position: absolute;
     width: 250px;
-    margin-top: 40px;
 }
 
 #add-person-form {
