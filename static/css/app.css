@@ -1,6 +1,5 @@
 body {
 
-    background-color: lightblue;
     font-family:Avenir,"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", 
   Helvetica, Arial, "Lucida Grande", sans-serif;
 }
@@ -11,12 +10,34 @@ body {
 }
 */
 
+.skill-instruction {
+
+    margin-left: 226px;
+    width: 250px;
+    font-style: italic;
+}
+
+.backgrid th {
+
+    font-weight: normal;
+    font-size: 15px !important;
+    border-bottom: 1px solid rgb(66, 139, 202) !important;
+
+}
+
 .backgrid td {
 
-    border-left: 1px solid rgb(66, 139, 202);
-    border-right: 1px solid rgb(66, 139, 202);
-    border-bottom: 1px solid rgb(66, 139, 202);
-    border-top: 1px solid rgb(66, 139, 202);
+    border-top: 1px solid rgb(66, 139, 202) !important;
+    border-left: 1px solid rgb(66, 139, 202) !important; 
+    border-right: 1px solid rgb(66, 139, 202) !important;
+    border-bottom: 1px solid rgb(66, 139, 202) !important;
+
+}
+
+#add-person-box {
+    position: absolute;
+    width: 250px;
+    margin-top: 40px;
 }
 
 #add-person-form {
@@ -33,7 +54,7 @@ body {
  */
 .backgrid {
     position: absolute;
-    margin-top: -77px;
+    margin-top: -9px;
     z-index: -1;
 }
 
@@ -43,7 +64,6 @@ body {
   border-right: 1px solid #666;
   border-bottom: 1px solid #666 !important;
   vertical-align: middle !important;
-  text-align: center !important;
 }
 
 .backgrid th{

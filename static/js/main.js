@@ -4,6 +4,7 @@ var AppRouter = Backbone.Router.extend({
 
 
     routes: {
+        ""        : "table",
         "home"        : "main",
         "people"  : "list",
         "table"   : "table"
