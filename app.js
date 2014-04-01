@@ -7,7 +7,8 @@ var io = require('socket.io');
 
 var app = express();
 
-app.set('port', 3000);
+//app.set('port', 3000);
+app.set('port', 80);
 
 app.use(function(req, res, next) {
     app.locals.pretty = true;

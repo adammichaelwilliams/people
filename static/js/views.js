@@ -44,7 +44,6 @@ window.TableView = Backbone.View.extend({
 
         var peopleList = this.model.peopleList;
         var skills = this.model.skills;
-        console.log(skills);
 
         var columns = skills.models.filter( function(model) {
             //TODO remove this logic, all it does is filter relatioships
@@ -67,7 +66,7 @@ window.TableView = Backbone.View.extend({
             collection: peopleList
         })
 
-        $(this.el).html('<div id="add-person-title">Add Yourself!</div><div id="add-person-success" style="display: none;">Success</div><form id="add-person-form" action="/people" method="post"><input id="add-person-email" name="title" type="email" placeholder="Email"/><input type="submit" id="add-person"/></form><div class="backgrid-cont"></div>');
+        $(this.el).html('<div id="add-person-box"><div id="add-person-title">Add Yourself!</div><div id="add-person-success" style="display: none;">Success</div><form id="add-person-form" action="/people" method="post"><input id="add-person-email" name="title" type="email" placeholder="Email"/><input type="submit" id="add-person"/></form><div class="skill-instruction">Put x if skill, i if interest</div></div><div class="backgrid-cont"></div>');
 
         this.render();
 
@@ -101,8 +100,6 @@ window.TableView = Backbone.View.extend({
             return;
         }
 
-        console.log(name);
-        console.log(url);
         var scope = this;
         $('#add-person-email').val('');    
         $('#add-person-title').hide();    
@@ -164,8 +161,6 @@ window.PersonView = Backbone.View.extend({
 
         //var personData = this.model.attributes._node._data.data;
         var personData = this.model;
-        console.log(personData);
-        console.log(personData.toJSON());
 
         var template = _.template($('#person-view-template').html(), {person : personData}); 
 
