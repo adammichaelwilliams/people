@@ -66,7 +66,7 @@ window.TableView = Backbone.View.extend({
             collection: peopleList
         })
 
-        $(this.el).html('<div id="add-person-box"><div id="add-person-title">Add Yourself!</div><div id="add-person-success" style="display: none;">Success</div><form id="add-person-form" action="/people" method="post"><input id="add-person-email" name="title" type="email" placeholder="Email"/><input type="submit" id="add-person"/></form><div class="skill-instruction">Put x if skill, i if interest</div></div><div class="backgrid-cont"></div>');
+        $(this.el).html('<div id="add-person-box"><div id="add-person-title">Add Yourself!</div><div id="add-person-success" style="display: none;">Success</div><form id="add-person-form" action="/people" method="post"><input id="add-person-email" name="title" placeholder="Name"/><input type="submit" id="add-person"/></form><div class="skill-instruction">Put x if skill, i if interest</div></div><div class="backgrid-cont"></div>');
 
         this.render();
 

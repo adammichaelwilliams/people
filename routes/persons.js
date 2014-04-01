@@ -54,7 +54,7 @@ exports.create = function(req, res, next) {
         if(err) return next(err);
 
         //HACK TODO TODO
-        Skill.get(2, function(err, skill) {
+        Skill.get(1, function(err, skill) {
             person.relate(skill, function(err) {
                 if(err) {
                     console.log("couldn't create relation between %s and %s", person.title, skill.title);
